@@ -1,8 +1,8 @@
 class Sr < Formula
   desc "Soft Return CLI — convert WordStar 4-7 documents and print-to-disk streams"
   homepage "https://github.com/jonmichaels/soft-return"
-  url "https://github.com/jonmichaels/soft-return/archive/refs/tags/v1.0.0.tar.gz"
-  sha256 "5d4c9e922ac4cc94f62b9df2a5fcc8e0bf2605b0a7b24e6470556f9ba7499eda"
+  url "https://github.com/jonmichaels/soft-return/archive/refs/tags/v1.1.0.tar.gz"
+  sha256 "a06750e470afeaf1577b113f2ea44feaffb04b56c8445cd62e326815d20bb757"
   license "MIT"
 
   depends_on xcode: ["16.0", :build]
