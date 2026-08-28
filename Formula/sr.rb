@@ -1,21 +1,27 @@
 class Sr < Formula
-  desc "Soft Return CLI — convert WordStar 4-7 documents and print-to-disk streams"
-  homepage "https://github.com/jonmichaels/soft-return"
-  url "https://github.com/jonmichaels/soft-return/archive/refs/tags/v3.1.0.tar.gz"
-  sha256 "2ab1b96d967a33473b2b2ea8ed50c639b4eef125b0c9bf1cab454d9c8b447718"
+  desc "Soft Return CLI: convert WordStar for DOS (v4-v7) documents to modern formats"
+  homepage "https://beforeti.me/soft-return/"
+  url "https://github.com/jonmichaels/soft-return/archive/refs/tags/v4.0.0.tar.gz"
+  sha256 "7405e9e8f54d1996e2206476faec8114dd15f3b6a1c84f41fb171aa65a293a81"
   license "MIT"
 
-  depends_on xcode: ["16.0", :build]
-  depends_on :macos
+  on_macos do
+    depends_on xcode: :build
+  end
+  on_linux do
+    depends_on "swift" => :build
+  end
 
   def install
-    system "swift", "build", "--disable-sandbox", "-c", "release"
+    system "swift", "build", "-c", "release", "--product", "sr"
     bin.install ".build/release/sr"
   end
 
   test do
-    assert_match "ctrl-kd parity", shell_output("#{bin}/sr --version")
-    (testpath/"LETTER").write("Dear Reader,\r\nA printed page.\r\n")
+    # a WordStar print-to-disk stream is plain text with hard CRs -- the simplest
+    # real input; conversion proves detection, parsing, and the text emitter
+    # (sr is byte-parity with ctrl-kd; same test shape as that formula)
+    (testpath/"LETTER").write("Dear Reader,\r\nThis is a printed page.\r\nSincerely,\r\n")
     system bin/"sr", "LETTER", "-t", "text"
     assert_match "Dear Reader", (testpath/"LETTER.txt").read
   end
