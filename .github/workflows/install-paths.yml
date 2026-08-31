@@ -10,7 +10,11 @@ on:
 
 jobs:
   brew-sr:
-    runs-on: macos-14
+    # macos-15 = Xcode 16: sr v4.0.2 needs @_extern(c:) (Swift 6).
+    # NEXT RELEASE: engine gains an #if compiler(>=6.0) fallback to
+    # @_silgen_name -> switch this to a macos-14 + macos-15 matrix so
+    # both branches build weekly (Homebrew floor becomes macOS 13+).
+    runs-on: macos-15
     steps:
       - name: Install sr via brew (source build, brew sandbox)
         run: |

@@ -6,7 +6,7 @@ class Sr < Formula
   license "MIT"
 
   on_macos do
-    depends_on xcode: :build
+    depends_on xcode: ["16.0", :build]
   end
   on_linux do
     depends_on "swift" => :build
