@@ -13,7 +13,7 @@ class Sr < Formula
   end
 
   def install
-    system "swift", "build", "-c", "release", "--product", "sr"
+    system "swift", "build", "--disable-sandbox", "-c", "release", "--product", "sr"
     bin.install ".build/release/sr"
   end
 
