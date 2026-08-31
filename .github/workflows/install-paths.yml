@@ -1,0 +1,83 @@
+name: install-paths
+# Real installs on fresh runners — the user path, not the dev path.
+# Free: public repo. Weekly + on formula change + manual.
+on:
+  push:
+    paths: [ "Formula/**", ".github/workflows/install-paths.yml" ]
+  schedule:
+    - cron: "0 13 * * 1"   # Mondays 13:00 UTC
+  workflow_dispatch:
+
+jobs:
+  brew-sr:
+    runs-on: macos-14
+    steps:
+      - name: Install sr via brew (source build, brew sandbox)
+        run: |
+          brew tap jonmichaels/tap
+          brew install --verbose jonmichaels/tap/sr
+      - name: Run it on a real input
+        run: |
+          sr --version
+          printf 'Dear Reader,\r\nThis is a printed page.\r\nSincerely,\r\n' > LETTER
+          sr LETTER -t text
+          grep -q "Dear Reader" LETTER.txt
+
+  brew-ctrl-kd:
+    runs-on: macos-14
+    steps:
+      - name: Install ctrl-kd via brew
+        run: |
+          brew tap jonmichaels/tap
+          brew install jonmichaels/tap/ctrl-kd
+      - name: Run it on a real input
+        run: |
+          ctrl-kd --version
+          printf 'Dear Reader,\r\nThis is a printed page.\r\nSincerely,\r\n' > LETTER
+          ctrl-kd LETTER -t text
+          grep -q "Dear Reader" LETTER.txt
+
+  pipx-ctrl-kd:
+    strategy:
+      matrix:
+        os: [ macos-14, ubuntu-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Install ctrl-kd via pipx from PyPI
+        run: |
+          pipx install ctrl-kd
+          pipx ensurepath
+      - name: Run it on a real input
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          ctrl-kd --version
+          printf 'Dear Reader,\r\nThis is a printed page.\r\nSincerely,\r\n' > LETTER
+          ctrl-kd LETTER -t text
+          grep -q "Dear Reader" LETTER.txt
+
+  dmg-notarization:
+    runs-on: macos-14
+    steps:
+      - name: Download latest DMG (stable link)
+        run: curl -fsSL -o Soft-Return.dmg https://github.com/jonmichaels/soft-return/releases/latest/download/Soft-Return.dmg
+      - name: Validate staple + Gatekeeper assessment
+        run: |
+          xcrun stapler validate Soft-Return.dmg
+          spctl -a -t open --context context:primary-signature -v Soft-Return.dmg
+          MOUNT=$(hdiutil attach -nobrowse -readonly Soft-Return.dmg | awk -F'\t' '/\/Volumes\//{print $NF}')
+          xcrun stapler validate "$MOUNT/Soft Return.app"
+          spctl -a -t exec -v "$MOUNT/Soft Return.app"
+          hdiutil detach "$MOUNT"
+
+  pkg-install:
+    runs-on: macos-14
+    steps:
+      - name: Download latest CLI pkg (stable link)
+        run: curl -fsSL -o Soft-Return-CLI.pkg https://github.com/jonmichaels/soft-return/releases/latest/download/Soft-Return-CLI.pkg
+      - name: Real install + run
+        run: |
+          sudo installer -pkg Soft-Return-CLI.pkg -target /
+          sr --version
+          printf 'Dear Reader,\r\nThis is a printed page.\r\nSincerely,\r\n' > LETTER
+          sr LETTER -t text
+          grep -q "Dear Reader" LETTER.txt
