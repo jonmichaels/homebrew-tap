@@ -11,14 +11,11 @@ on:
 jobs:
   brew-sr:
     # macos-15 = Xcode 16: sr v4.0.2 needs @_extern(c:) (Swift 6).
-    # macos-14 is EXPECTED TO FAIL until the next sr release ships an
-    # #if compiler(>=6.0) fallback to @_silgen_name — Formula/sr.rb still
-    # pins depends_on xcode: ["16.0", :build]. Kept in the matrix so the
-    # weekly run starts passing automatically once that release ships.
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-14, macos-15 ]
+        # add macos-14 in the same commit that switches Formula/sr.rb to CLT-only (sr release with the zlib compiler-gate fallback)
+        os: [ macos-15 ]
     runs-on: ${{ matrix.os }}
     name: brew-sr (${{ matrix.os }})
     steps:
