@@ -1,8 +1,8 @@
 class Sr < Formula
   desc "Soft Return CLI: convert WordStar for DOS (v4-v7) documents to modern formats"
   homepage "https://beforeti.me/soft-return/"
-  url "https://github.com/jonmichaels/soft-return/archive/refs/tags/v4.2.0.tar.gz"
-  sha256 "9ea6e2880e7c93e494d18d121e1fb894cd241b7ff14481676c08dd5307f6fcf6"
+  url "https://github.com/jonmichaels/soft-return/archive/refs/tags/v4.3.0.tar.gz"
+  sha256 "a82eee22f7dfad54e0edfe62b43e62e36baaf70308b3b231bd66820570731262"
   license "MIT"
 
   on_macos do
