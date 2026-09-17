@@ -3,8 +3,8 @@ class CtrlKd < Formula
 
   desc "Convert WordStar 4-7 documents and print-to-disk files to text, Markdown, HTML, RTF, or PDF"
   homepage "https://github.com/jonmichaels/ctrl-kd"
-  url "https://files.pythonhosted.org/packages/be/0b/330ed9748969226eb99bb208a05cce5927da537ebf078181c538b2dc0682/ctrl_kd-4.8.1.tar.gz"
-  sha256 "c4f3340ef84f16b13125a6e2c1704c828447a9c57fef50d91fb8f136e34dfa7b"
+  url "https://files.pythonhosted.org/packages/25/7f/b3a0edd07cd8a1b269789f0afad4939aaca85a818a026c902ab41666db07/ctrl_kd-4.9.0.tar.gz"
+  sha256 "1f77694622cf4fa6451ee669ac0ddb4822a5702c7cf6a9c17de23902e12d4aef"
   license "MIT"
 
   depends_on "python@3.12"
